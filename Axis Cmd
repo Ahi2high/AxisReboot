@@ -1,0 +1,75 @@
+@echo off
+
+:start
+cls
+echo Welcome to Axis Control Menu
+echo 1. Open Cmd Telnet
+echo 2. Quit
+
+set /p choice=Enter your choice: 
+
+if "%choice%"=="1" (
+    call :openCmdTelnet
+) else if "%choice%"=="2" (
+    exit /b
+) else (
+    echo Invalid choice. Please try again.
+    timeout /t 2 /nobreak >nul
+    goto start
+)
+
+:openCmdTelnet
+cls
+echo Opening Cmd Telnet...
+timeout /t 2 /nobreak >nul
+
+set /p axis_ip=Enter the IP address of the Axis device: 
+
+echo.
+echo Please login:
+timeout /t 5 /nobreak >nul
+echo root
+timeout /t 2 /nobreak >nul
+echo ge
+timeout /t 2 /nobreak >nul
+
+:rebootAxis
+cls
+echo Which Axis device do you want to reboot?
+echo 1. Axis 1 - llm -r192.168.1.23
+echo 2. Axis 2 - llm -r192.168.1.24
+echo 3. Axis 3 - llm -r192.168.1.25
+echo 4. Back to Main Menu
+
+set /p axis_choice=Enter your choice: 
+
+if "%axis_choice%"=="1" (
+    set axis_command=llm -r192.168.1.23
+) else if "%axis_choice%"=="2" (
+    set axis_command=llm -r192.168.1.24
+) else if "%axis_choice%"=="3" (
+    set axis_command=llm -r192.168.1.25
+) else if "%axis_choice%"=="4" (
+    goto start
+) else (
+    echo Invalid choice. Please try again.
+    timeout /t 2 /nobreak >nul
+    goto rebootAxis
+)
+
+echo.
+echo Do you want to reboot Axis %axis_choice%? (yes/no)
+set /p reboot_choice=
+
+if /i "%reboot_choice%"=="yes" (
+    echo !shutdown
+    timeout /t 3 /nobreak >nul
+) else if /i "%reboot_choice%"=="no" (
+    goto start
+) else (
+    echo Invalid choice. Please try again.
+    timeout /t 2 /nobreak >nul
+    goto rebootAxis
+)
+
+goto start
