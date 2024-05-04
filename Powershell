@@ -1,0 +1,84 @@
+function Open-CmdTelnet {
+    cls
+    Write-Host "Opening Cmd Telnet..."
+    Start-Sleep -Seconds 2
+
+    $axis_ip = Read-Host "Enter the IP address of the Axis device"
+
+    Write-Host ""
+    Write-Host "Please login:"
+    Start-Sleep -Seconds 5
+
+    # Establish telnet connection
+    $session = New-Object System.Net.Sockets.TcpClient($axis_ip, 23)
+    $stream = $session.GetStream()
+    $writer = New-Object System.IO.StreamWriter($stream)
+    $reader = New-Object System.IO.StreamReader($stream)
+
+    # Wait for login prompt and enter username
+    Start-Sleep -Seconds 2
+    $writer.WriteLine("root")
+    $writer.Flush()
+
+    # Wait for password prompt and enter password
+    Start-Sleep -Seconds 2
+    $writer.WriteLine("ge")
+    $writer.Flush()
+}
+
+function Reboot-Axis {
+    cls
+    Write-Host "Which Axis device do you want to reboot?"
+    Write-Host "1. Axis 1 - llm -r192.168.1.23"
+    Write-Host "2. Axis 2 - llm -r192.168.1.24"
+    Write-Host "3. Axis 3 - llm -r192.168.1.25"
+    Write-Host "4. Back to Main Menu"
+
+    $axis_choice = Read-Host "Enter your choice"
+
+    switch ($axis_choice) {
+        "1" { $axis_command = "llm -r192.168.1.23" }
+        "2" { $axis_command = "llm -r192.168.1.24" }
+        "3" { $axis_command = "llm -r192.168.1.25" }
+        "4" { return }
+        Default { 
+            Write-Host "Invalid choice. Please try again."
+            Start-Sleep -Seconds 2
+            Reboot-Axis
+            return
+        }
+    }
+
+    Write-Host ""
+    $reboot_choice = Read-Host "Do you want to reboot Axis $axis_choice? (yes/no)"
+
+    if ($reboot_choice -eq "yes") {
+        Write-Host "!shutdown"
+        Start-Sleep -Seconds 3
+    } elseif ($reboot_choice -eq "no") {
+        return
+    } else {
+        Write-Host "Invalid choice. Please try again."
+        Start-Sleep -Seconds 2
+        Reboot-Axis
+    }
+}
+
+# Main menu loop
+while ($true) {
+    cls
+    Write-Host "Welcome to Axis Control Menu"
+    Write-Host "1. Open Cmd Telnet"
+    Write-Host "2. Quit"
+
+    $choice = Read-Host "Enter your choice"
+
+    switch ($choice) {
+        "1" { Open-CmdTelnet }
+        "2" { exit }
+        Default { 
+            Write-Host "Invalid choice. Please try again."
+            Start-Sleep -Seconds 2
+        }
+    }
+}
