@@ -27,11 +27,19 @@ set /p axis_ip=Enter the IP address of the Axis device:
 
 echo.
 echo Please login:
+
 timeout /t 5 /nobreak >nul
+
+:: Establish telnet connection
+telnet %axis_ip%
+
+:: Wait for login prompt and enter username
+timeout /t 2 /nobreak >nul
 echo root
+
+:: Wait for password prompt and enter password
 timeout /t 2 /nobreak >nul
 echo ge
-timeout /t 2 /nobreak >nul
 
 :rebootAxis
 cls
