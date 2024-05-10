@@ -1,4 +1,5 @@
 #SingleInstance, force
+Gui, Add, Picture, x5 y5 w50 h50, https://placementdrive.in/wp-content/uploads/2022/11/1200px-Genpact_logo.svg-1024x379.png
 Gui, Add, Text, x60 y10 w300 h30, Lifespan Call Log
 Gui, Add, Text, x10 y60 w50 h30, Name:
 Gui, Add, Edit, x60 y60 w200 h30 vName required
