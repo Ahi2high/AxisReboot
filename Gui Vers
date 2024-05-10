@@ -1,5 +1,4 @@
 #SingleInstance, force
-Gui, Add, Picture, x5 y5 w50 h50, https://placementdrive.in/wp-content/uploads/2022/11/1200px-Genpact_logo.svg-1024x379.png
 Gui, Add, Text, x60 y10 w300 h30, Lifespan Call Log
 Gui, Add, Text, x10 y60 w50 h30, Name:
 Gui, Add, Edit, x60 y60 w200 h30 vName required
@@ -21,7 +20,6 @@ Gui, Add, ListView, x300 y60 w400 h310 gListView, Name|Company|Site|Tower|Resolu
 LV_ModifyCol(6, "AutoHdr")
 LV_ModifyCol(7, "AutoHdr")
 Gui, Add, Button, x450 y375 w200 h30 gDownloadButton, Download as CSV
-Gui, Add, CheckBox, x660 y20 w100 h30 gToggleDarkMode, Dark Mode
 
 Gui, Show, w700 h400, Wind Turbine Call Log
 
@@ -44,14 +42,6 @@ DownloadButton:
     LV_GetText(AllItems)
     FileDelete, %A_ScriptDir%\call_log.csv
     FileAppend, Name, Company, Site, Tower, Resolution, Load Shutdown, Return to Service Time`n%AllItems%, %A_ScriptDir%\call_log.csv
-Return
-
-ToggleDarkMode:
-    Gui, Submit, NoHide
-    if (ToggleDarkMode = 1)
-        GuiControl, -Redraw, LV1
-    else
-        GuiControl, +Redraw, LV1
 Return
 
 GenerateButton:
